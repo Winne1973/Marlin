@@ -4244,17 +4244,33 @@ void controllerFan()
   {
     lastMotorCheck = millis();
 
-    if(!READ(X_ENABLE_PIN) || !READ(Y_ENABLE_PIN) || !READ(Z_ENABLE_PIN)
+//Time does not expire , if you X_ENABLE_ON 1, Y_ENABLE_ON 1,Z_ENABLE_ON 1 or E_ENABLE_ON 1 in the Configuration.h.
+
+#if defined( X_ENABLE_ON || 
+    if(READ(X_ENABLE_PIN) || READ(Y_ENABLE_PIN) || READ(Z_ENABLE_PIN)
     #if EXTRUDERS > 2
-       || !READ(E2_ENABLE_PIN)
+       || READ(E2_ENABLE_PIN)
     #endif
     #if EXTRUDER > 1
       #if defined(X2_ENABLE_PIN) && X2_ENABLE_PIN > -1
-       || !READ(X2_ENABLE_PIN)
+       || READ(X2_ENABLE_PIN)
       #endif
-       || !READ(E1_ENABLE_PIN)
+       || READ(E1_ENABLE_PIN)
     #endif
-       || !READ(E0_ENABLE_PIN)) //If any of the drivers are enabled...
+       || READ(E0_ENABLE_PIN)) //If any of the drivers are enabled...
+    
+//    if(!READ(X_ENABLE_PIN) || !READ(Y_ENABLE_PIN) || !READ(Z_ENABLE_PIN)
+//    #if EXTRUDERS > 2
+//       || !READ(E2_ENABLE_PIN)
+//    #endif
+//    #if EXTRUDER > 1
+//      #if defined(X2_ENABLE_PIN) && X2_ENABLE_PIN > -1
+//       || !READ(X2_ENABLE_PIN)
+//      #endif
+//       || !READ(E1_ENABLE_PIN)
+//    #endif
+//       || !READ(E0_ENABLE_PIN)) //If any of the drivers are enabled...
+//    
     {
       lastMotor = millis(); //... set time to NOW so the fan will turn on
     }
